@@ -976,4 +976,16 @@ public class Graph {
     return num;
   } // safeVertexNumber(String)
 
+
+  public void reachableFrom(PrintWriter pen, int vertex) {
+    pen.println(vertexName(vertex));
+    mark(vertex);
+    List<Edge> children = vertices[vertex];
+    reachableFromHelper(pen, vertex, children);
+  }
+
+  public void reachableFromHelper(PrintWriter pen, int vertex, List<Edge> children) {
+    
+  }
+
 } // class Graph

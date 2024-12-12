@@ -986,6 +986,65 @@ public class Graph {
 
   public void reachableFromHelper(PrintWriter pen, int vertex, List<Edge> children) {
     
-  }
+  } 
 
+
+  public List<Edge>[] shortestPath(int source, int sink) {
+
+    // The distances from SOURCE
+    Integer[] distances = new Integer[vertices.length];
+    for (Integer i : distances) {
+      distances[i] = null;
+    } // for
+    distances[source] = 0;
+    // mark(source);
+
+    // The preceding vertex in the stortest path to each vertex
+    Integer[] prevNode = new Integer[vertices.length];
+    for (Integer i : prevNode) {
+      prevNode[i] = null;
+    } // for
+
+    
+    List<Edge> current = vertices[source];
+    while (!isMarked(sink)) {
+
+      // Update distances
+      for (Edge l : current) {
+        int t = l.target();
+        // distances[t] = l.weight(l.source(), l.target())
+        if (!isMarked(t)) {
+          if (distances[t] == null) {
+            distances[t] = distances[l.source()] + l.weight();
+          } else if (distances[l.source()] + l.weight() < distances[t]) {
+            distances[t] = distances[l.source()] + l.weight();
+          }
+      } // for
+
+      int min = -1;
+      for (int i = 0; i < distancesInteger i : distances) {
+        if (!isMarked(i)) {
+          if (min == -1) {
+            min = 
+          }
+        }
+      } // for
+      // current = vertices[]
+    } // while
+    
+
+  // To find the shortest path from SOURCE to SINK,
+  // Indicate that all vertices have infinite distance from SOURCE
+  // Indicate that SOURCE has a distance of 0 from itself
+  // While unmarked(SINK) and there exists an unmarked node with finite distance from SOURCE
+  //   Find the nearest unmarked vertex, U
+  //   Mark U
+  //   For each unmarked neighbor, V, of U
+  //     If distanceTo(U) + edgeWeight(U,V) < distanceTo(V)
+  //       Note that the best known path to V is the path to U plus the
+  //         edge from U to V.
+  //       Update the distance to V
+  // Report the path to SINK, if there is one
+    return null;
+  }
 } // class Graph

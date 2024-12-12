@@ -26,7 +26,7 @@ public class GraphExperiment {
     g.addVertex("a");
     g.addVertex("b");
     g.addVertex("c");
-    g.dumpWithNames(pen);
+    g.dump(pen);
 
     // Add a few edges
     g.addEdge("a", "b", 1);

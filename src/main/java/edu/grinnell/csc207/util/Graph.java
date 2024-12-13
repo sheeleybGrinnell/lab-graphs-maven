@@ -1036,7 +1036,6 @@ public class Graph {
         int weight = l.weight();
 
         if (!isMarked(tar)) {
-        // System.err.println(distances[tar] + " | " + distances[cur] + " " + weight);
           if (distances[tar] == null || distances[cur] + weight < distances[tar]) {
             distances[tar] = distances[cur] + weight;
           } // if/if

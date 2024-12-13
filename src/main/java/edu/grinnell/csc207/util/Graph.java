@@ -1003,46 +1003,26 @@ public class Graph {
   public Integer[] shortestPath(int source, int sink) {
 
     // The distances from SOURCE.
-    Integer[] distances = new Integer[vertices.length];
-    for (Integer i : distances) {
+    Integer[] distances = new Integer[numVertices()];
+    for (int i = 0; i < distances.length; i++) {
       distances[i] = null;
     } // for
     distances[source] = 0;
     // mark(source);
 
     // The preceding vertex in the stortest path to each vertex.
-    Integer[] prevNodes = new Integer[vertices.length];
-    for (Integer i : prevNodes) {
+    Integer[] prevNodes = new Integer[numVertices()];
+    for (int i = 0; i < prevNodes.length; i++) {
       prevNodes[i] = null;
     } // for
 
-    int prevNode = -1;
+    // Process the first loop manually.
+    int prevNode = source;
+    List<Edge> current = vertices[source];
+    mark(source);
+
     // Loop while SINK is unmarked.
     while (!isMarked(sink)) {
-
-      // Find the minimum in distances[].
-      int min = -1;
-      for (int i = 0; i < distances.length; i++) {
-        // Make sure the index (vertex) isn't marked or unreachable.
-        if (!isMarked(i) && distances[i] != null) {
-          if (distances[min] > distances[i] || min == -1) {
-            min = i;
-          } // if/if
-        } // if
-      } // for
-
-      // Update prevNodes[] and prevNode.
-      if (prevNode != -1) {
-        prevNodes[min] = prevNode;
-      } // if
-      prevNode = min;
-
-      // Mark the min vertex.
-      mark(prevNode);
-
-      // Set the min vertex to the current vertex (U).
-      // Get all the edges which exit the (now) current vertex.
-      List<Edge> current = vertices[prevNode];
 
       // Update distances[].
       for (Edge l : current) {
@@ -1056,11 +1036,34 @@ public class Graph {
         int weight = l.weight();
 
         if (!isMarked(tar)) {
-          if (distances[cur] + weight < distances[tar] || distances[tar] == null) {
+        // System.err.println(distances[tar] + " | " + distances[cur] + " " + weight);
+          if (distances[tar] == null || distances[cur] + weight < distances[tar]) {
             distances[tar] = distances[cur] + weight;
           } // if/if
         } // if
       } // for
+
+      // Find the minimum in distances[].
+      int min = -1;
+      for (int i = 0; i < distances.length; i++) {
+        // Make sure the index (vertex) isn't marked or unreachable.
+        if (!isMarked(i) && distances[i] != null) {
+          if (min == -1|| distances[min] < distances[i]) {
+            min = i;
+          } // if/if
+        } // if
+      } // for
+
+      // Update prevNodes[] and prevNode.
+      prevNodes[min] = prevNode;
+      prevNode = min;
+
+      // Mark the min vertex.
+      mark(prevNode);
+
+      // Set the min vertex to the current vertex (U).
+      // Get all the edges which exit the (now) current vertex.
+      current = vertices[prevNode];
     } // while
 
     return prevNodes;

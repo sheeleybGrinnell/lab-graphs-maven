@@ -985,13 +985,24 @@ public class Graph {
   }
 
   public void reachableFromHelper(PrintWriter pen, int vertex, List<Edge> children) {
-    
+    // STUB
   } 
 
+  /**
+   * Finds the shortest path using Djikstra's.
+   *
+   * @param source
+   *    Start node
+   * @param sink
+   *    End node
+   * @return
+   *    A list which gives the best path if
+   *    followed starting at the end node and
+   *    ending at the start node.
+   */
+  public Integer[] shortestPath(int source, int sink) {
 
-  public List<Edge>[] shortestPath(int source, int sink) {
-
-    // The distances from SOURCE
+    // The distances from SOURCE.
     Integer[] distances = new Integer[vertices.length];
     for (Integer i : distances) {
       distances[i] = null;
@@ -999,52 +1010,59 @@ public class Graph {
     distances[source] = 0;
     // mark(source);
 
-    // The preceding vertex in the stortest path to each vertex
-    Integer[] prevNode = new Integer[vertices.length];
-    for (Integer i : prevNode) {
-      prevNode[i] = null;
+    // The preceding vertex in the stortest path to each vertex.
+    Integer[] prevNodes = new Integer[vertices.length];
+    for (Integer i : prevNodes) {
+      prevNodes[i] = null;
     } // for
 
-    
-    List<Edge> current = vertices[source];
+    int prevNode = -1;
+    // Loop while SINK is unmarked.
     while (!isMarked(sink)) {
 
-      // Update distances
-      for (Edge l : current) {
-        int t = l.target();
-        // distances[t] = l.weight(l.source(), l.target())
-        if (!isMarked(t)) {
-          if (distances[t] == null) {
-            distances[t] = distances[l.source()] + l.weight();
-          } else if (distances[l.source()] + l.weight() < distances[t]) {
-            distances[t] = distances[l.source()] + l.weight();
-          }
-      } // for
-
+      // Find the minimum in distances[].
       int min = -1;
-      for (int i = 0; i < distancesInteger i : distances) {
-        if (!isMarked(i)) {
-          if (min == -1) {
-            min = 
-          }
-        }
+      for (int i = 0; i < distances.length; i++) {
+        // Make sure the index (vertex) isn't marked or unreachable.
+        if (!isMarked(i) && distances[i] != null) {
+          if (distances[min] > distances[i] || min == -1) {
+            min = i;
+          } // if/if
+        } // if
       } // for
-      // current = vertices[]
-    } // while
-    
 
-  // To find the shortest path from SOURCE to SINK,
-  // Indicate that all vertices have infinite distance from SOURCE
-  // Indicate that SOURCE has a distance of 0 from itself
-  // While unmarked(SINK) and there exists an unmarked node with finite distance from SOURCE
-  //   Find the nearest unmarked vertex, U
-  //   Mark U
-  //   For each unmarked neighbor, V, of U
-  //     If distanceTo(U) + edgeWeight(U,V) < distanceTo(V)
-  //       Note that the best known path to V is the path to U plus the
-  //         edge from U to V.
-  //       Update the distance to V
-  // Report the path to SINK, if there is one
-    return null;
-  }
+      // Update prevNodes[] and prevNode.
+      if (prevNode != -1) {
+        prevNodes[min] = prevNode;
+      } // if
+      prevNode = min;
+
+      // Mark the min vertex.
+      mark(prevNode);
+
+      // Set the min vertex to the current vertex (U).
+      // Get all the edges which exit the (now) current vertex.
+      List<Edge> current = vertices[prevNode];
+
+      // Update distances[].
+      for (Edge l : current) {
+        // Indicate the target vertex for simplicity.
+        int tar = l.target();
+
+        // Indicate the current vertex for simplicity.
+        int cur = l.source();
+
+        // Indicate the weight for simplicity.
+        int weight = l.weight();
+
+        if (!isMarked(tar)) {
+          if (distances[cur] + weight < distances[tar] || distances[tar] == null) {
+            distances[tar] = distances[cur] + weight;
+          } // if/if
+        } // if
+      } // for
+    } // while
+
+    return prevNodes;
+  } // shortestPath(int, int)
 } // class Graph

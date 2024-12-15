@@ -981,12 +981,12 @@ public class Graph {
     pen.println(vertexName(vertex));
     mark(vertex);
     List<Edge> children = vertices[vertex];
-    reachableFromHelper(pen, vertex, children);
-  }
-
-  public void reachableFromHelper(PrintWriter pen, int vertex, List<Edge> children) {
-    // STUB
-  } 
+    for (Edge ch : children) {
+      if (!isMarked(ch.target())) {
+        reachableFrom(pen, ch.target());
+      } // if
+    } // for
+  } // reachableFrom()
 
   /**
    * Finds the shortest path using Djikstra's.
